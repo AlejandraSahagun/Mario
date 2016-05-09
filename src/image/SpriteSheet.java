@@ -23,4 +23,7 @@ public class SpriteSheet {
 			e.printStackTrace();
 		}
 	}
+	public int getWidth() {
+		return width;
+	}
 }

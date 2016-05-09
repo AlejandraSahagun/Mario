@@ -1,21 +1,22 @@
 package image;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-
-import java.awt.Dimension;
 import java.awt.Graphics;
-
+import java.util.ArrayList;
 
 public class PanelImage extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-
+	private ArrayList<Drawable> draws;
 	public void paintComponent(Graphics g) {
-	
-		Dimension tam = getSize();
-		
-		ImageIcon image = new ImageIcon(new ImageIcon(getClass().getResource("/images/Fondo_celeste.jpg")).getImage());
-		g.drawImage(image.getImage(), 0, 0, tam.width, tam.height, null);
+		if(draws != null) {
+			for(Drawable d : draws) {
+				g.drawImage(d.getImage(), d.getX(), d.getY(), d.getW(), d.getH(), this);
+			}
+		}	
+	}
+	public void drawComponent(ArrayList<Drawable> draws) {
+		this.draws = draws;
+		repaint();
 	}
 }
