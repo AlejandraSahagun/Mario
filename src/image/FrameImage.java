@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import Objects.Background;
 import Objects.Solid;
 import characters.Charact;
 
@@ -42,7 +41,7 @@ public class FrameImage extends JFrame implements KeyListener{
 		addKeyListener(this); //Ayuda a detectar cuando una tecla se presiona
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	public void Draw(ArrayList<Charact> characters, ArrayList<Solid> solids) {
+	public void draw(ArrayList<Charact> characters, ArrayList<Solid> solids) {
 		//Se crea un arrayList de todo lo que se va a dibujar en el tablero
 		ArrayList<Drawable> draws = new ArrayList<Drawable>();
 		draws.add(new Background());
@@ -53,6 +52,9 @@ public class FrameImage extends JFrame implements KeyListener{
 			draws.add(characters.get(i));
 		}
 		pi.drawComponent(draws);
+	}
+	public void draw(Drawable draw) {
+		pi.drawComponent(draw);
 	}
 	public ArrayList<Integer> getEvents(){
 		ArrayList <Integer> tmp = (ArrayList<Integer>) events.clone();

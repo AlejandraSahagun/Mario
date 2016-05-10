@@ -13,6 +13,7 @@ import Objects.SurpriseCube;
 import characters.Bowser;
 import characters.Charact;
 import image.FrameImage;
+import image.GameOver;
 
 public class UseMario {
 	ArrayList<Solid> solids;
@@ -21,7 +22,7 @@ public class UseMario {
 		boolean alive = true;
 		solids  = new ArrayList<Solid>();
 		characters = new ArrayList<Charact>();
-		Bowser bowser = new Bowser(50, 30);
+		Bowser bowser = new Bowser(400, 300);
 		characters.add(bowser);
 		loadComponents();
 		FrameImage f = new FrameImage();
@@ -53,52 +54,49 @@ public class UseMario {
 					}
 
 				} else if (actions.get(i) == KeyEvent.VK_UP) {
-					bowser.jump(false, false);
-					for (int j = 0; j < solids.size(); j++) {	
-						if(solids.get(j).getY() + solids.get(j).getH() < bowser.getY() + 1 && //solids.get(j).getH() > bowser.getY() + 1 && 
-								(solids.get(j).getX() <= bowser.getX() && solids.get(j).getX() + solids.get(j).getW() >= bowser.getX()) ||
-								(solids.get(j).getX() <= bowser.getX() + bowser.getW() && solids.get(j).getX()+ solids.get(j).getW() >= bowser.getX() 
-								+ bowser.getW() && solids.get(j).getY() - 1 < bowser.getY() + bowser.getH() && solids.get(j).getY() > bowser.getY() + 1)) {
-							bowser.gravity();
-						}
-					}
-//					for (int j = 0; j < solids.size(); j++) {
-//						if(solids.get(j).getY() + solids.get(j).getH() < bowser.getY() + 1 &&
-//								solids.get(j).getY() > bowser.getY() + 1) {
-//							bowser.gravity();
-//
-//						}
-//					}						
+					bowser.setJump();						
 				}
 			}
 			//Gravity
 			boolean bowserMove = true;
 			for (int i = 0; i < solids.size(); i++) {	
-				if(solids.get(i).getY() < bowser.getY() + bowser.getH() + 1 && solids.get(i).getY() > bowser.getY() - 1 && 
-						(solids.get(i).getX() <= bowser.getX() && solids.get(i).getX() + solids.get(i).getW() >= bowser.getX()) ||
-						(solids.get(i).getX() <= bowser.getX() + bowser.getW() && solids.get(i).getX()+ solids.get(i).getW() >= bowser.getX() 
-						+ bowser.getW() && solids.get(i).getY() - 1 < bowser.getY() + bowser.getH() && solids.get(i).getY() > bowser.getY() + 1)) {
+				if(solids.get(i).getY() < bowser.getY() + bowser.getH() + 1 && solids.get(i).getY() + solids.get(i).getH() > bowser.getY() + bowser.getH() + 1 && 
+						(solids.get(i).getX() <= bowser.getX() && solids.get(i).getX() + solids.get(i).getW() >= bowser.getX() ||
+						solids.get(i).getX() < bowser.getX() + bowser.getW() && solids.get(i).getX()+ solids.get(i).getW() > bowser.getX() 
+						+ bowser.getW())) {
 					bowserMove = false;
 				}
 			}
+			if (bowser.getJumping()) {
+				boolean canJump = true;
+				for (int j = 0; j < solids.size(); j++) {	
+					if(solids.get(j).getY() + solids.get(j).getH() >= bowser.getY() - 1 && solids.get(j).getY() <= bowser.getY() - 1 && 
+						(solids.get(j).getX() <= bowser.getX() && solids.get(j).getX() + solids.get(j).getW() >= bowser.getX() ||
+									solids.get(j).getX() <= bowser.getX() + bowser.getW() && solids.get(j).getX() + solids.get(j).getW() >= bowser.getX() 
+									+ bowser.getW())) {
+						canJump = false;
+					}
+				}
+				bowser.jump(!canJump, false);
+			}
 			if (bowserMove) {
 				bowser.gravity();
+			} else {
+				bowser.resetJump();
 			}
-			//			for (int i = 0; i < characters.size(); i++) {
-			//				
-			//					charcter.gravity();
-			//				}
-			//			}
-			if (bowser.getJumping()) {
-				bowser.jump(false, false);
+			if(bowser.getY() + bowser.getH() == 650) {
+				alive = false;
 			}
 			//Draw
-			f.Draw(characters, solids);
+			f.draw(characters, solids);
 			try {
 				Thread.sleep(1000/24);
 			} catch (InterruptedException e) {}
 		} while(alive);
-
+		
+		if(!alive) {
+			f.draw(new GameOver());
+		}
 	}
 	public static void main(String[] args) {
 		new UseMario();
