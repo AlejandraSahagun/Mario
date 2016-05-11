@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import Objects.Solid;
+import characters.Bowser;
 import characters.Charact;
 
 public class FrameImage extends JFrame implements KeyListener{
@@ -44,7 +45,8 @@ public class FrameImage extends JFrame implements KeyListener{
 	public void draw(ArrayList<Charact> characters, ArrayList<Solid> solids) {
 		//Se crea un arrayList de todo lo que se va a dibujar en el tablero
 		ArrayList<Drawable> draws = new ArrayList<Drawable>();
-		draws.add(new Background());
+		draws.add(new Background());			
+			
 		for(int i = 0; i < solids.size(); i++) {
 			draws.add(solids.get(i)); //Imagen, PosiciónX * 50, PosicionY * 50, tamaño del cubo (50, 50)
 		}
@@ -61,18 +63,15 @@ public class FrameImage extends JFrame implements KeyListener{
 		events = new ArrayList<Integer>();
 		return tmp;
 	}
+	
 	public void keyPressed(KeyEvent e) { 
 		events.add(e.getKeyCode());
 	}
 	
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+
+	public void keyTyped(KeyEvent e) {		
 	}
 
 }
