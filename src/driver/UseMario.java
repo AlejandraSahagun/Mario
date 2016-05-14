@@ -17,6 +17,7 @@ import Objects.SurpriseCube;
 import Objects.UsedBlock;
 import characters.Bowser;
 import characters.Charact;
+import characters.Yoshi;
 import image.FrameImage;
 import image.GameOver;
 import image.YouWin;
@@ -31,13 +32,17 @@ public class UseMario {
 		characters = new ArrayList<Charact>();
 		Bowser bowser = new Bowser(50, 500);
 		characters.add(bowser);
+		Yoshi yoshi1 = new Yoshi(600);
+		characters.add(yoshi1);
+		
+		
 		loadComponents();
 		FrameImage f = new FrameImage();
 
 		do {
 			//IO
 			ArrayList<Integer> actions = f.getEvents();
-			
+
 			//********************************* Monedas ***************************************			
 			for (int i = 0; i < solids.size(); i++) {
 				if(solids.get(i) instanceof Coin) {
@@ -49,11 +54,11 @@ public class UseMario {
 						break;
 					}
 					else if(solids.get(i).getX() + solids.get(i).getW() >= bowser.getX() - 2 && solids.get(i).getX() <= bowser.getX() - 2 &&
-							(solids.get(i).getY() < bowser.getY() + bowser.getH() && solids.get(i).getY() + solids.get(i).getH() > bowser.getY() + bowser.getH() ||
-							solids.get(i).getY() + solids.get(i).getH() > bowser.getY() && solids.get(i).getY() < bowser.getY())) {
+							(solids.get(i).getY() < bowser.getY() + bowser.getH() && solids.get(i).getY() + solids.get(i).getH() > bowser.getY())) {
 						solids.remove(i);
 						break;
 					}
+
 					else if(solids.get(i).getY() + solids.get(i).getH() >= bowser.getY() - 2 && solids.get(i).getY() < bowser.getY() - 2 && 
 							(solids.get(i).getX() <= bowser.getX() && solids.get(i).getX() + solids.get(i).getW() >= bowser.getX() ||
 							solids.get(i).getX() < bowser.getX() + bowser.getW() && solids.get(i).getX()+ solids.get(i).getW() > bowser.getX() 
@@ -69,8 +74,38 @@ public class UseMario {
 					}
 				}
 			}
-			//Logic
+
+			//********************************* Yoshi *************************************
+			
+			
+			for (int i = 0; i < solids.size(); i++) {
+				//Colision izquierda
+				if(solids.get(i).getX() + solids.get(i).getW() >= yoshi1.getX() - 2 && solids.get(i).getX() <= yoshi1.getX() - 2 &&
+						(solids.get(i).getY() < yoshi1.getY() + yoshi1.getH() && solids.get(i).getY() + solids.get(i).getH() > yoshi1.getY())) {
+					yoshi1.changeDirection();
+					break;
 					
+				}
+				//Colision derecha
+				else if(solids.get(i).getX() < yoshi1.getW() + yoshi1.getX() + 2 && solids.get(i).getX() + solids.get(i).getW() > yoshi1.getX() + yoshi1.getW() + 2 &&
+						(solids.get(i).getY() < yoshi1.getY() + yoshi1.getH() && solids.get(i).getY() + solids.get(i).getH() > yoshi1.getY() + yoshi1.getH() ||
+								solids.get(i).getY() + solids.get(i).getH() > yoshi1.getY() && solids.get(i).getY() < yoshi1.getY())) {
+					yoshi1.changeDirection();
+					break;
+				}
+			}	
+			for(int i = 0; i < characters.size(); i++) {
+				if (!(characters.get(i) instanceof Bowser)) {
+					characters.get(i).move(0);
+				}
+			}
+
+
+
+
+
+			//Logic
+
 			for (int i = 0; i < actions.size(); i++) {
 				boolean canMove = true;
 				if(actions.get(i) == KeyEvent.VK_RIGHT) {
@@ -144,11 +179,11 @@ public class UseMario {
 					}
 				}
 			}
-		
+
 			if(bowser.getX() + bowser.getH() >= 3150) {	
 				break;
 			}
-			
+
 			f.draw(characters, solids);
 			try {
 				Thread.sleep(1000/24);
@@ -160,7 +195,7 @@ public class UseMario {
 		} else {
 			f.draw(new YouWin());
 		}
-		
+
 	}
 	public static void main(String[] args) {
 		new UseMario();
