@@ -1,10 +1,14 @@
 package driver;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import Objects.Castle;
 import Objects.Coin;
@@ -37,6 +41,7 @@ public class UseMario {
 		
 		
 		loadComponents();
+		music();
 		FrameImage f = new FrameImage();
 
 		do {
@@ -133,7 +138,8 @@ public class UseMario {
 					}
 
 				} else if (actions.get(i) == KeyEvent.VK_UP) {
-					bowser.setJump();						
+					bowser.setJump();
+					bowser.sound(0);
 				}
 			}
 			//Gravity
@@ -164,6 +170,7 @@ public class UseMario {
 				bowser.resetJump();
 			}
 			if(bowser.getY() + bowser.getH() == 650) {
+				bowser.sound(1);
 				alive = false;
 			} 
 			//********************************* Cubo Sorpresa ****************************************
@@ -194,6 +201,7 @@ public class UseMario {
 			f.draw(new GameOver());
 		} else {
 			f.draw(new YouWin());
+			bowser.sound(2);
 		}
 
 	}
@@ -236,5 +244,17 @@ public class UseMario {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	public void music() {
+		Clip sound = null;
+		try {
+			sound = AudioSystem.getClip();
+			sound.open(AudioSystem.getAudioInputStream(new File("resources/back.wav")));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		sound.start();
+		sound.drain();
 	}
 }
