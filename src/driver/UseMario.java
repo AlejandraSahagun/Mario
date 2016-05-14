@@ -59,11 +59,12 @@ public class UseMario {
 						break;
 					}
 					else if(solids.get(i).getX() + solids.get(i).getW() >= bowser.getX() - 2 && solids.get(i).getX() <= bowser.getX() - 2 &&
-							(solids.get(i).getY() < bowser.getY() + bowser.getH() && solids.get(i).getY() + solids.get(i).getH() > bowser.getY())) {
+							(solids.get(i).getY() < bowser.getY() + bowser.getH() && solids.get(i).getY() + solids.get(i).getH() > bowser.getY() + bowser.getH() ||
+									solids.get(i).getY() + solids.get(i).getH() > bowser.getY() && solids.get(i).getY() < bowser.getY())) {
 						solids.remove(i);
 						break;
 					}
-
+					
 					else if(solids.get(i).getY() + solids.get(i).getH() >= bowser.getY() - 2 && solids.get(i).getY() < bowser.getY() - 2 && 
 							(solids.get(i).getX() <= bowser.getX() && solids.get(i).getX() + solids.get(i).getW() >= bowser.getX() ||
 							solids.get(i).getX() < bowser.getX() + bowser.getW() && solids.get(i).getX()+ solids.get(i).getW() > bowser.getX() 
